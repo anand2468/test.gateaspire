@@ -1,0 +1,6 @@
+{
+  "name": "GATE Aspire",
+  "description": "Minimalistic GATE Exam Preparation Platform with PYQs, Subject & Topic-wise Tests, Community Questions, Analytics & Admin Management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

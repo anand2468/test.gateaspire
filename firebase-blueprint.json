@@ -1,0 +1,207 @@
+{
+  "entities": {
+    "users": {
+      "title": "User Profile",
+      "description": "User profile with role and GATE target details",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "branch": { "type": "string" },
+        "targetYear": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "displayName", "role"]
+    },
+    "questions": {
+      "title": "Question Bank",
+      "description": "PYQs, subject tests, and community created GATE questions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "questionText": { "type": "string" },
+        "type": { "type": "string", "enum": ["MCQ", "MSQ", "NAT"] },
+        "options": { "type": "array", "items": { "type": "string" } },
+        "correctAnswers": { "type": "array", "items": { "type": "string" } },
+        "natMin": { "type": "number" },
+        "natMax": { "type": "number" },
+        "subject": { "type": "string" },
+        "topic": { "type": "string" },
+        "branch": { "type": "string" },
+        "year": { "type": "number" },
+        "mark": { "type": "number" },
+        "explanation": { "type": "string" },
+        "createdByUid": { "type": "string" },
+        "createdByName": { "type": "string" },
+        "isCommunity": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["approved", "pending", "rejected"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["questionText", "type", "subject", "topic", "branch", "mark"]
+    },
+    "testAttempts": {
+      "title": "Test Attempt Record",
+      "description": "Record of completed user subject/topic/mock test attempts",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "testTitle": { "type": "string" },
+        "subject": { "type": "string" },
+        "topic": { "type": "string" },
+        "type": { "type": "string" },
+        "score": { "type": "number" },
+        "maxScore": { "type": "number" },
+        "totalQuestions": { "type": "number" },
+        "correctCount": { "type": "number" },
+        "incorrectCount": { "type": "number" },
+        "skippedCount": { "type": "number" },
+        "timeTakenSeconds": { "type": "number" },
+        "branch": { "type": "string" },
+        "answers": { "type": "object" },
+        "questionIds": { "type": "array", "items": { "type": "string" } },
+        "attemptedAt": { "type": "string" }
+      },
+      "required": ["userId", "score", "maxScore", "attemptedAt"]
+    },
+    "forumPosts": {
+      "title": "Community Post",
+      "description": "Discussion post or question inquiry in GATE Aspire community",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "authorUid": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorPhoto": { "type": "string" },
+        "subject": { "type": "string" },
+        "branch": { "type": "string" },
+        "questionId": { "type": "string" },
+        "upvotesCount": { "type": "number" },
+        "upvotedBy": { "type": "array", "items": { "type": "string" } },
+        "commentsCount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "content", "authorUid", "authorName", "createdAt"]
+    },
+    "forumComments": {
+      "title": "Forum Comment",
+      "description": "Reply or answer on a community post",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "postId": { "type": "string" },
+        "content": { "type": "string" },
+        "authorUid": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorPhoto": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["postId", "content", "authorUid", "authorName", "createdAt"]
+    },
+    "bookmarks": {
+      "title": "Question Bookmark",
+      "description": "User saved questions for revision",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "questionId": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "questionId"]
+    },
+    "userStreaks": {
+      "title": "User Daily Streak",
+      "description": "Consecutive days study streak and aggregate study time tracker for logged in users",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "currentStreak": { "type": "number" },
+        "longestStreak": { "type": "number" },
+        "lastActiveDate": { "type": "string" },
+        "totalStudyDays": { "type": "number" },
+        "totalStudyTimeMinutes": { "type": "number" },
+        "activeDatesMap": { "type": "object" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId", "currentStreak", "longestStreak", "lastActiveDate", "totalStudyDays"]
+    },
+    "studyLogs": {
+      "title": "Daily Study Activity Log",
+      "description": "Normalized daily study activity log records",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "date": { "type": "string" },
+        "minutesStudied": { "type": "number" },
+        "questionsSolved": { "type": "number" },
+        "testsTaken": { "type": "number" },
+        "activityTypes": { "type": "array", "items": { "type": "string" } },
+        "note": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["userId", "date", "minutesStudied", "timestamp"]
+    },
+    "userPlanners": {
+      "title": "User Study Planner Data",
+      "description": "User specific study goals, syllabus completion statuses, timetable, and exam targets",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "gateTargets": { "type": "object" },
+        "topicStatuses": { "type": "object" },
+        "monthlyGoals": { "type": "array" },
+        "timetable": { "type": "array" },
+        "todayLoggedHours": { "type": "number" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/users" },
+      "description": "User profile collection"
+    },
+    "/userPlanners/{userId}": {
+      "schema": { "$ref": "#/entities/userPlanners" },
+      "description": "User specific study goals and planner document"
+    },
+    "/userStreaks/{userId}": {
+      "schema": { "$ref": "#/entities/userStreaks" },
+      "description": "User daily study streak document"
+    },
+    "/studyLogs/{logId}": {
+      "schema": { "$ref": "#/entities/studyLogs" },
+      "description": "Normalized daily study logs"
+    },
+    "/questions/{questionId}": {
+      "schema": { "$ref": "#/entities/questions" },
+      "description": "Questions bank"
+    },
+    "/testAttempts/{attemptId}": {
+      "schema": { "$ref": "#/entities/testAttempts" },
+      "description": "User test attempts history"
+    },
+    "/forumPosts/{postId}": {
+      "schema": { "$ref": "#/entities/forumPosts" },
+      "description": "Community posts"
+    },
+    "/forumComments/{commentId}": {
+      "schema": { "$ref": "#/entities/forumComments" },
+      "description": "Community comments"
+    },
+    "/bookmarks/{bookmarkId}": {
+      "schema": { "$ref": "#/entities/bookmarks" },
+      "description": "User bookmarked questions"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check auth
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Questions collection
+    match /questions/{questionId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated();
+    }
+
+    // Test attempts
+    match /testAttempts/{attemptId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // Forum posts
+    match /forumPosts/{postId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated();
+    }
+
+    // Forum comments
+    match /forumComments/{commentId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated();
+    }
+
+    // Connection test rule
+    match /_connection_test/{docId} {
+      allow read: if true;
+    }
+
+    // Bookmarks
+    match /bookmarks/{bookmarkId} {
+      allow read: if true;
+      allow create, delete: if isAuthenticated();
+    }
+
+    // User Streaks - Normalized 1:1 user streak tracking
+    match /userStreaks/{userId} {
+      allow read, write: if true;
+    }
+
+    // Study Logs - Normalized daily study logs
+    match /studyLogs/{logId} {
+      allow read, write: if true;
+    }
+
+    // User Planners & Goals - 1:1 user study goals data
+    match /userPlanners/{userId} {
+      allow read, write: if true;
+    }
+  }
+}
